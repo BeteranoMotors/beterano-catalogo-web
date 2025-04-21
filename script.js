@@ -6,8 +6,8 @@ async function cargarDatos() {
 
   const tabla = document.querySelector('#tablaPiezas tbody');
   const selector = document.getElementById('vehiculoSelect');
+  const busquedaInput = document.getElementById('busquedaInput');
 
-  // Llenar el selector de vehículos
   const vehiculosUnicos = [...new Set(mensajes.map(m => m.clasificacion?.vehiculo || 'Desconocido'))];
   vehiculosUnicos.forEach(v => {
     const opt = document.createElement('option');
@@ -16,10 +16,18 @@ async function cargarDatos() {
     selector.appendChild(opt);
   });
 
-  function mostrarFiltrados(filtroVehiculo = '') {
+  function mostrarFiltrados(filtroVehiculo = '', texto = '') {
+    const textoLower = texto.toLowerCase();
     tabla.innerHTML = '';
     mensajes
-      .filter(m => !filtroVehiculo || m.clasificacion?.vehiculo === filtroVehiculo)
+      .filter(m =>
+        (!filtroVehiculo || m.clasificacion?.vehiculo === filtroVehiculo) &&
+        (
+          m.mensaje?.toLowerCase().includes(textoLower) ||
+          m.clasificacion?.pieza?.toLowerCase().includes(textoLower) ||
+          m.usuario?.toLowerCase().includes(textoLower)
+        )
+      )
       .forEach(m => {
         const row = document.createElement('tr');
         row.innerHTML = `
@@ -33,7 +41,11 @@ async function cargarDatos() {
   }
 
   selector.addEventListener('change', () => {
-    mostrarFiltrados(selector.value);
+    mostrarFiltrados(selector.value, busquedaInput.value);
+  });
+
+  busquedaInput.addEventListener('input', () => {
+    mostrarFiltrados(selector.value, busquedaInput.value);
   });
 
   mostrarFiltrados();

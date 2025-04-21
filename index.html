@@ -7,13 +7,20 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Catálogo de Piezas</h1>
-  <div>
+  <header>
+    <h1>BETERANO | Catálogo de Piezas</h1>
+    <p class="aviso">🔧 Versión beta — solo lectura — catálogo en desarrollo</p>
+  </header>
+
+  <div class="filtros">
     <label for="vehiculoSelect">Filtrar por vehículo:</label>
     <select id="vehiculoSelect">
       <option value="">Todos</option>
     </select>
+
+    <input type="text" id="busquedaInput" placeholder="Buscar texto libre..." />
   </div>
+
   <table id="tablaPiezas">
     <thead>
       <tr>
@@ -25,6 +32,7 @@
     </thead>
     <tbody></tbody>
   </table>
+
   <script src="script.js"></script>
 </body>
 </html>
