@@ -1,0 +1,16 @@
+/* Fuente Oswald */
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
+
+:root {
+  --font-principal: 'Oswald', sans-serif;
+
+  /* Colores */
+  --color-fondo: #f4f4f4;
+  --color-header: #1c1c1c;
+  --color-texto-claro: #ffffff;
+  --color-link: #007bff;
+  --color-link-hover: #0056b3;
+
+  /* Espaciado */
+  --padding-principal: 20px;
+}
