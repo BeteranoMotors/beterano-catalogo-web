@@ -13,10 +13,17 @@
   </header>
 
   <div class="filtros">
-    <label for="vehiculoSelect">Filtrar por vehículo:</label>
-    <select id="vehiculoSelect">
-      <option value="">Todos</option>
-    </select>
+    <label for="vehiculoSelect">Vehículo:</label>
+    <select id="vehiculoSelect"><option value="">Todos</option></select>
+
+    <label for="ensamblajeSelect">Ensamblaje:</label>
+    <select id="ensamblajeSelect"><option value="">Todos</option></select>
+
+    <label for="categoriaSelect">Categoría:</label>
+    <select id="categoriaSelect"><option value="">Todas</option></select>
+
+    <label for="subcategoriaSelect">Subcategoría:</label>
+    <select id="subcategoriaSelect"><option value="">Todas</option></select>
 
     <input type="text" id="busquedaInput" placeholder="Buscar texto libre..." />
   </div>
@@ -25,6 +32,9 @@
     <thead>
       <tr>
         <th>Vehículo</th>
+        <th>Ensamblaje</th>
+        <th>Categoría</th>
+        <th>Subcategoría</th>
         <th>Parte</th>
         <th>Mensaje</th>
         <th>Autor</th>
