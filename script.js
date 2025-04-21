@@ -1,7 +1,5 @@
 async function cargarDatos() {
-  const [mensajes] = await Promise.all([
-    fetch('data/mensajes.json').then(r => r.json())
-  ]);
+  const mensajes = await fetch('data/mensajes.json').then(r => r.json());
 
   const tabla = document.querySelector('#tablaPiezas tbody');
   const vehiculoSelect = document.getElementById('vehiculoSelect');
@@ -10,9 +8,14 @@ async function cargarDatos() {
   const subcategoriaSelect = document.getElementById('subcategoriaSelect');
   const busquedaInput = document.getElementById('busquedaInput');
 
-  function llenarOpciones(selector, valores) {
+  const [vehiculosData, piezasData] = await Promise.all([
+    fetch('https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/vehiculos.json').then(r => r.json()),
+    fetch('https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/biblioteca_piezas.json').then(r => r.json())
+  ]);
+
+  function llenarSelectUnico(selector, values) {
     selector.innerHTML = '<option value="">Todos</option>';
-    valores.forEach(v => {
+    [...new Set(values)].sort().forEach(v => {
       const opt = document.createElement('option');
       opt.value = v;
       opt.textContent = v;
@@ -20,14 +23,10 @@ async function cargarDatos() {
     });
   }
 
-  function extraerUnicos(clave) {
-    return [...new Set(mensajes.map(m => m.clasificacion?.[clave]).filter(Boolean))].sort();
-  }
-
-  llenarOpciones(vehiculoSelect, extraerUnicos('vehiculo'));
-  llenarOpciones(ensamblajeSelect, extraerUnicos('ensamblaje'));
-  llenarOpciones(categoriaSelect, extraerUnicos('categoria'));
-  llenarOpciones(subcategoriaSelect, extraerUnicos('subcategoria'));
+  llenarSelectUnico(vehiculoSelect, vehiculosData.map(v => v.modelo).filter(Boolean));
+  llenarSelectUnico(ensamblajeSelect, piezasData.map(p => p.ensamblaje).filter(Boolean));
+  llenarSelectUnico(categoriaSelect, piezasData.map(p => p.categoria).filter(Boolean));
+  llenarSelectUnico(subcategoriaSelect, piezasData.map(p => p.subcategoria).filter(Boolean));
 
   function mostrarFiltrados() {
     const filtro = {
@@ -71,5 +70,4 @@ async function cargarDatos() {
 
   mostrarFiltrados();
 }
-
 cargarDatos();
