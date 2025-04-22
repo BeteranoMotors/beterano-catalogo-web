@@ -1,50 +1,34 @@
-// scripts/main.js
+import { fetchJSON } from '../utils/fetchData.js';
 
-async function cargarModelosPorTipo() {
-    const params = new URLSearchParams(window.location.search);
-    const tipoSeleccionado = params.get("tipo");
-  
-    if (!tipoSeleccionado) {
-      document.body.innerHTML = "<p>Tipo no especificado</p>";
-      return;
+// Función para renderizar los modelos en la página intermedia
+export async function renderModelosPorTipo(tipo) {
+  const contenedor = document.getElementById("contenedorModelos");
+  const data = await fetchJSON('https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/data/vehiculos.json');
+
+  const modelosUnicos = new Map();
+
+  data.forEach(v => {
+    if (v.Tipo === tipo) {
+      const key = `${v.Modelo}|${v["Serie/Generacion"]}`;
+      if (!modelosUnicos.has(key)) {
+        modelosUnicos.set(key, {
+          modelo: v.Modelo,
+          generacion: v["Serie/Generacion"]
+        });
+      }
     }
-  
-    const contenedor = document.getElementById("listaModelos");
-  
-    try {
-      const res = await fetch("https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/data/vehiculos.json");
-      const data = await res.json();
-  
-      // Filtrar por tipo y mapear combinaciones únicas Modelo + Serie/Generacion
-      const combinacionesUnicas = Array.from(
-        new Set(
-          data
-            .filter(v => v.Tipo === tipoSeleccionado)
-            .map(v => `${v.Modelo}|||${v["Serie/Generacion"]}`)
-        )
-      );
-  
-      // Renderizar tarjetas
-      combinacionesUnicas.forEach(item => {
-        const [modelo, serie] = item.split("|||");
-  
-        const card = document.createElement("div");
-        card.className = "modelo-card";
-  
-        card.innerHTML = `
-          <h3>${modelo}</h3>
-          <p>${serie}</p>
-          <a href="catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&serie=${encodeURIComponent(serie)}">Ver catálogo</a>
-        `;
-  
-        contenedor.appendChild(card);
-      });
-  
-    } catch (error) {
-      console.error("Error cargando vehículos:", error);
-      contenedor.innerHTML = "<p>Error al cargar datos de vehículos.</p>";
-    }
-  }
-  
-  cargarModelosPorTipo();
-  
+  });
+
+  modelosUnicos.forEach(({ modelo, generacion }) => {
+    const div = document.createElement("div");
+    div.className = "tarjeta";
+
+    div.innerHTML = `
+      <h3>${modelo}</h3>
+      <p>${generacion}</p>
+      <a href="catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&generacion=${encodeURIComponent(generacion)}">Ver catálogo</a>
+    `;
+
+    contenedor.appendChild(div);
+  });
+}
