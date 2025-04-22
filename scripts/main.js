@@ -1,7 +1,8 @@
 import { fetchJSON } from '../utils/fetchData.js';
 
-export async function renderTipoCatalogo(tipo) {
-  const contenedor = document.getElementById("vehiculos-container");
+// Función para renderizar los modelos en la página intermedia
+export async function renderModelosPorTipo(tipo) {
+  const contenedor = document.getElementById("contenedorModelos");
   const data = await fetchJSON('https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/data/vehiculos.json');
 
   const modelosUnicos = new Map();
@@ -10,29 +11,35 @@ export async function renderTipoCatalogo(tipo) {
     if (v.Tipo === tipo) {
       const key = `${v.Modelo}|${v["Serie/Generacion"]}`;
       if (!modelosUnicos.has(key)) {
-        modelosUnicos.set(key, v);
+        modelosUnicos.set(key, {
+          modelo: v.Modelo,
+          generacion: v["Serie/Generacion"]
+        });
       }
     }
   });
 
-  modelosUnicos.forEach(vehiculo => {
-    const modelo = vehiculo.Modelo;
-    const generacion = vehiculo["Serie/Generacion"];
-    const nombreCompleto = `${modelo} ${generacion}`;
-
+  modelosUnicos.forEach(({ modelo, generacion }) => {
     const div = document.createElement("div");
-    div.className = "hero-card";
+    div.className = "tarjeta-modelo";
 
-    // Imagen o fallback
-    div.style.backgroundImage = vehiculo.Imagen
-      ? `url(${vehiculo.Imagen})`
-      : `linear-gradient(to right, #222, #333)`;
+    const imageName = `${modelo}-${generacion}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    const imageUrl = `https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/img/vehiculos/modelo/${imageName}.jpg`;
 
-    const link = document.createElement("a");
-    link.href = `catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&generacion=${encodeURIComponent(generacion)}`;
-    link.textContent = nombreCompleto;
+    div.style.backgroundImage = `url('${imageUrl}')`;
+    div.style.backgroundSize = 'cover';
+    div.style.backgroundPosition = 'center';
 
-    div.appendChild(link);
+    div.innerHTML = `
+      <div class="tarjeta-overlay">
+        <h2 class="titulo-modelo">${modelo} ${generacion}</h2>
+        <a href="catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&generacion=${encodeURIComponent(generacion)}">Ver catálogo</a>
+      </div>
+    `;
+
     contenedor.appendChild(div);
   });
 }
