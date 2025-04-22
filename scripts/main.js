@@ -1,8 +1,7 @@
 import { fetchJSON } from '../utils/fetchData.js';
 
-// Función para renderizar los modelos en la página intermedia
-export async function renderModelosPorTipo(tipo) {
-  const contenedor = document.getElementById("contenedorModelos");
+export async function renderTipoCatalogo(tipo) {
+  const contenedor = document.getElementById("vehiculos-container");
   const data = await fetchJSON('https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/data/vehiculos.json');
 
   const modelosUnicos = new Map();
@@ -11,24 +10,29 @@ export async function renderModelosPorTipo(tipo) {
     if (v.Tipo === tipo) {
       const key = `${v.Modelo}|${v["Serie/Generacion"]}`;
       if (!modelosUnicos.has(key)) {
-        modelosUnicos.set(key, {
-          modelo: v.Modelo,
-          generacion: v["Serie/Generacion"]
-        });
+        modelosUnicos.set(key, v);
       }
     }
   });
 
-  modelosUnicos.forEach(({ modelo, generacion }) => {
+  modelosUnicos.forEach(vehiculo => {
+    const modelo = vehiculo.Modelo;
+    const generacion = vehiculo["Serie/Generacion"];
+    const nombreCompleto = `${modelo} ${generacion}`;
+
     const div = document.createElement("div");
-    div.className = "tarjeta";
+    div.className = "hero-card";
 
-    div.innerHTML = `
-      <h3>${modelo}</h3>
-      <p>${generacion}</p>
-      <a href="catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&generacion=${encodeURIComponent(generacion)}">Ver catálogo</a>
-    `;
+    // Imagen o fallback
+    div.style.backgroundImage = vehiculo.Imagen
+      ? `url(${vehiculo.Imagen})`
+      : `linear-gradient(to right, #222, #333)`;
 
+    const link = document.createElement("a");
+    link.href = `catalogo_vehiculo.html?modelo=${encodeURIComponent(modelo)}&generacion=${encodeURIComponent(generacion)}`;
+    link.textContent = nombreCompleto;
+
+    div.appendChild(link);
     contenedor.appendChild(div);
   });
 }

@@ -2,29 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo por tipo</title>
+  <title>Catálogo</title>
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="stylesheet" href="styles/config.css" />
 </head>
 <body>
   <header>
-    <h1 id="tituloTipo" class="title-xl">Catálogo</h1>
+    <h1 id="tituloTipo" class="title-xl">Modelos</h1>
   </header>
-  <main>
-    <div id="contenedorModelos" class="tarjetas"></div>
-  </main>
+  <main id="vehiculos-container" class="hero-lista"></main>
 
-  <script type="module">
-    import { renderModelosPorTipo } from './data/scripts/main.js';
-
-    const params = new URLSearchParams(window.location.search);
-    const tipo = params.get("tipo") || "SUV";
-
-    // Cambiar el título según el tipo
+  <script src="utils/fetchData.js"></script>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/main.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tipo = urlParams.get("tipo");
     document.getElementById("tituloTipo").textContent = tipo;
 
-    renderModelosPorTipo(tipo);
+    renderTipoCatalogo(tipo);
   </script>
 </body>
 </html>

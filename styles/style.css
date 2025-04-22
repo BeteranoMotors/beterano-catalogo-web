@@ -41,3 +41,32 @@ header {
   height: auto;
   border-radius: 8px;
 }
+.hero-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.hero-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 1px 1px 2px #000;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.hero-card a {
+  color: white;
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
