@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap');
 
 :root {
-  --font-principal: 'Oswald', sans-serif;
+  --font-principal: 'Oswald Light', sans-serif;
 
   /* Colores */
   --color-fondo: #f4f4f4;
