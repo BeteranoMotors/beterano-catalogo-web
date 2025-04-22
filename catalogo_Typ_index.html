@@ -2,14 +2,24 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Seleccionar Vehículo</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modelos disponibles</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/config.css" />
 </head>
 <body>
-  <header><h1>Modelos disponibles</h1></header>
+  <header>
+    <h1 class="title-xl">Modelos disponibles</h1>
+  </header>
   <main>
-    <div id="vehiculos-container" class="tarjetas"></div>
+    <div id="contenedorModelos" class="tarjetas"></div>
   </main>
-  <script src="js/modelos.js"></script>
+
+  <script type="module">
+    import { renderModelosPorTipo } from './data/scripts/main.js';
+    const params = new URLSearchParams(window.location.search);
+    const tipo = params.get("tipo") || "SUV";
+    renderModelosPorTipo(tipo);
+  </script>
 </body>
 </html>
