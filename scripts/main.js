@@ -13,13 +13,14 @@ export async function renderModelosPorTipo(tipo) {
       if (!modelosUnicos.has(key)) {
         modelosUnicos.set(key, {
           modelo: v.Modelo,
-          generacion: v["Serie/Generacion"]
+          generacion: v["Serie/Generacion"],
+          imagen: v.Imagen || null
         });
       }
     }
   });
 
-  modelosUnicos.forEach(({ modelo, generacion }) => {
+  modelosUnicos.forEach(({ modelo, generacion, imagen }) => {
     const div = document.createElement("div");
     div.className = "tarjeta-modelo";
 
@@ -27,7 +28,9 @@ export async function renderModelosPorTipo(tipo) {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
-    const imageUrl = `https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/img/vehiculos/modelo/${imageName}.jpg`;
+    const imageUrl = imagen
+      ? `https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/${imagen}`
+      : `https://raw.githubusercontent.com/BeteranoMotors/beterano-data/main/img/vehiculos/modelo/${imageName}.jpg`;
 
     div.style.backgroundImage = `url('${imageUrl}')`;
     div.style.backgroundSize = 'cover';
