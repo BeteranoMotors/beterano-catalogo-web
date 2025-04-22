@@ -1,16 +1,43 @@
-@import url("config.css");
-
 body {
-  font-family: var(--font-principal);
-  background-color: var(--color-fondo);
+  font-family: 'Oswald', sans-serif;
   margin: 0;
+  background-color: #f4f4f4;
   padding: 0;
 }
-
 header {
-  background-color: var(--color-header);
-  color: var(--color-texto-claro);
-  padding: var(--padding-principal);
+  background-color: #1c1c1c;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+}
+.tipo-selector {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem;
+}
+.tipo-selector a {
+  font-size: 1.5rem;
+  text-decoration: none;
+  background: #eee;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  color: #333;
+}
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 2rem;
+}
+.tarjeta {
+  background: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.tarjeta img {
   width: 100%;
-  box-sizing: border-box;
+  height: auto;
+  border-radius: 8px;
 }
